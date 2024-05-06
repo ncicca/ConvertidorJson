@@ -18,12 +18,12 @@ const preguntas = [
 
             {
                 value: '2',
-                name:`${ '2'.green.bold} Generar archivo JSON `
+                name:`${ '2'.green.bold} Obtener TOKEN `
             },
 
             {
                 value: '3',
-                name:`${ '3'.green.bold} Subir archivo JSON `
+                name:`${ '3'.green.bold} Generar archivo JSON `
             },
 
             {
@@ -33,7 +33,12 @@ const preguntas = [
 
             {
                 value: '5',
-                name:`${ '5'.green.bold} Ver listado de clientes del sistema `
+                name:`${ '5'.green.bold} Obtener clientes GET `
+            },
+
+            {
+                value: '6',
+                name:`${ '6'.green.bold} Enviar JSON vía POST `
             },
 
             {

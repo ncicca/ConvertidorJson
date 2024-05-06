@@ -62,13 +62,11 @@ const generarJSONDesdeExcel = (excelFilePath, jsonFilePath) => {
             "exenciones": [],
             "ingresosBrutos": row.ingresosBrutos_Provincia && row.ingresosBrutos_Porcentaje ? [{ "Provincia": row.ingresosBrutos_Provincia, "Porcentaje": row.ingresosBrutos_Porcentaje }] : [],
             "provinciasAgenteRetencion": row.provinciasAgenteRetencion_Provincia ? [{ "Provincia": row.provinciasAgenteRetencion_Provincia }] : [],
-            "condicionesVenta": [{
-                "codigo": row.Codigo.toString().padStart(3, '0'), // Convertir a cadena de texto y agregar ceros a la izquierda *NO FUNCIONA SI ES UN NUMERO SIN 0*
-                "porDefecto": row.porDefecto === "true" ? true : false,
-                "listaEstandar": row.listaEstandar,
-                "listaOferta": row.listaOferta,
-                "listaMinima": row.listaMinima
-            }],
+            "condicionesVenta": row.condicionesVenta_codigo && row.condicionesVenta_porDefecto && row.condicionesVenta_listaEstandar
+                              && row.condicionesVenta_listaOferta && row.condicionesVenta_listaMinima  ?
+                             [{ "codigo": `"${row.condicionesVenta_codigo}"`, "porDefecto": row.condicionesVenta_porDefecto === "true" ? true : false,
+                            "listaEstandar": row.condicionesVenta_listaEstandar, "listaOferta": row.condicionesVenta_listaOferta,
+                            "listaMinima": row.condicionesVenta_listaMinima }] : [], 
             "atributos": row.atributos_codigo && row.atributos_valor ? [{ "codigo": row.atributos_codigo, "valor": row.atributos_valor }] : [],
             "comprobantesSuspendidos": [],
             "cuentasCorrientes": [],
@@ -105,53 +103,6 @@ fs.writeFileSync(jsonFilePath, JSON.stringify(jsonData, null, 2));
 console.log('JSON generado exitosamente.');
 };
 
-//CONFIGURAR TODO
-const obtenerAccessToken = async (authUrl, clientId, clientSecret) => {
-    try {
-        // Realizar la solicitud POST para obtener el access token
-        const response = await axios.post(authUrl, {
-            client_id: clientId,
-            client_secret: clientSecret,
-            grant_type: 'client_credentials'
-        });
-
-        // Extraer el access token de la respuesta
-        const accessToken = response.data.access_token;
-        return accessToken;
-    } catch (error) {
-        throw new Error('Error al obtener el access token: ' + error.message);
-    }
-};
-
-
-//CONFIGURAR TODO
-const enviarJSONAlSistema = async (jsonFilePath, apiUrl, accessToken) => {
-    try {
-        // Cargar el JSON desde el archivo
-        const jsonData = require(jsonFilePath);
-
-        // Realizar la solicitud POST con axios incluyendo el access token en los headers
-        const response = await axios.post(apiUrl, jsonData, {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        });
-
-        console.log('Solicitud POST exitosa. Respuesta del sistema:', response.data);
-    } catch (error) {
-        console.error('Error al enviar el JSON al sistema:', error.message);
-    }
-};
-
-
-//CONFIGURAR TODO:
-
-
-
-
-
 module.exports = {
-    generarJSONDesdeExcel,
-    enviarJSONAlSistema,
-    obtenerAccessToken
+    generarJSONDesdeExcel
 };
