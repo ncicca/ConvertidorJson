@@ -1,7 +1,8 @@
-{
-    "Codigo": "180",
-    "razonSocial": "Bot 180",
-    "nombreFantasia": "Bot 170 S.A",
+[
+  {
+    "Codigo": "190",
+    "razonSocial": "Bot 190",
+    "nombreFantasia": "Bot 190 S.A",
     "email": "Bot160@gmail.com",
     "paginaWeb": "bot160.com.ar",
     "nuestroCodigoProve": null,
@@ -45,6 +46,18 @@
     "atributos": [],
     "comprobantesSuspendidos": [],
     "cuentasCorrientes": [],
-    "domicilios": [],
+    "domicilios": [
+      {
+        "Descripcion": null,
+        "Domicilio1": null,
+        "Domicilio2": null,
+        "CodigoPostal": null,
+        "Localidad": null,
+        "Provincia": null,
+        "Principal": false,
+        "Habilitado": false
+      }
+    ],
     "empresas": []
   }
+]
