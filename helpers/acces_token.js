@@ -40,7 +40,7 @@ const obtenerAccessToken = async () => {
         );
 
         const accessToken = response.data.access_token;
-        // console.log(`Token generado con éxito: ${accessToken}`); // Mensaje de éxito con el código del token
+        console.log(`Token generado con éxito: *****`); // Mensaje de éxito con el código del token
           return accessToken;
     } catch (error) {
         if (error.response) {
