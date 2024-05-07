@@ -42,6 +42,11 @@ const preguntas = [
             },
 
             {
+                value: '7',
+                name:`${ '7'.green.bold} Enviar excel completo vía POST `
+            },
+
+            {
                 value: '0',
                 name:`${ '0'.red.bold} ${'SALIR'.red.bold} `
             },

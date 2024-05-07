@@ -1,35 +1,25 @@
 require('colors');
 
-
-const { inquirerMenu,
-         pausa,
-        leerInput,
-        confirmar
-} = require('./helpers/inquirer');
-
-const fs = require('fs');
+const { inquirerMenu, pausa } = require('./helpers/inquirer');
 const { contarRegistrosEnExcel } = require('./helpers/excel');
-const { generarJSONDesdeExcel } = require('./helpers/json');
-const { obtenerAccessToken, setAccessToken, getAccessToken, validarAccessToken } = require('./helpers/acces_token');
-const { obtenerClientes } = require('./helpers/getClientes');
+const { generarJSONDesdeExcel, generarJSONFromRow } = require('./helpers/json');
+const { obtenerAccessToken, setAccessToken } = require('./helpers/acces_token');
 const { enviarDatos } = require('./helpers/postClientes');
+const xlsx = require('xlsx');
+const fs = require('fs');
 
 console.clear();
-//Funcion Main
-const main = async()  => {
-    
-    //Inicializo la variable opt
-    let opt='';
 
-    do{
-        //Llamo al menu de inquirerMenu
+// Función principal (main)
+const main = async () => {
+    let opt = '';
+
+    do {
         opt = await inquirerMenu();
-      
-        //Uso un switch para cada caso
-        switch (opt) {
-            
-            case '1': //Leo la cantidad de registros del archivo excel
 
+        switch (opt) {
+            case '1':
+                // Leer la cantidad de registros del archivo Excel
                 try {
                     const filePath = 'C:/Users/admin/Desktop/CC/PP/01-Convert/prueba.xlsx';
                     const totalRegistros = await contarRegistrosEnExcel(filePath);
@@ -37,20 +27,20 @@ const main = async()  => {
                 } catch (error) {
                     console.error('Error al leer el archivo Excel:', error);
                 }
+                break;
 
-            break;
-
-
-            case '2': 
+            case '2':
+                // Obtener y almacenar el token de acceso
                 try {
                     const accessToken = await obtenerAccessToken();
-                    setAccessToken(accessToken); // Almacenar el token obtenido
+                    setAccessToken(accessToken);
                 } catch (error) {
                     console.error('Error al obtener el token de acceso:', error.message);
                 }
-            break;
+                break;
 
-            case '3':  
+            case '3':
+                // Generar JSON desde Excel
                 try {
                     const excelFilePath = 'C:/Users/admin/Desktop/CC/PP/01-Convert/prueba.xlsx';
                     const jsonFilePath = 'C:/Users/admin/Desktop/CC/PP/01-Convert/ArchivoGenerado.json';
@@ -58,58 +48,84 @@ const main = async()  => {
                 } catch (error) {
                     console.error('Error al generar JSON desde Excel:', error);
                 }
+                break;
 
-            break;
-
-        case '4':  
+            case '4':
+                // Eliminar archivo JSON generado
                 try {
                     const jsonFilePath = 'C:/Users/admin/Desktop/CC/PP/01-Convert/ArchivoGenerado.json';
-            
-                    // Verificar si el archivo existe antes de intentar eliminarlo
                     if (fs.existsSync(jsonFilePath)) {
-                        fs.unlinkSync(jsonFilePath); // Elimina el archivo JSON
+                        fs.unlinkSync(jsonFilePath);
                         console.log(`Archivo JSON '${jsonFilePath}' eliminado exitosamente.`);
                     } else {
                         console.log(`El archivo JSON '${jsonFilePath}' no existe.`);
                     }
-                }catch (error) {
+                } catch (error) {
                     console.error('Error al eliminar el archivo JSON:', error.message);
                 }
-            break;
+                break;
 
-        case '5':
+            case '5':
+                // Obtener lista de clientes
                 try {
                     const accessToken = await obtenerAccessToken();
-                    setAccessToken(accessToken); // Almacenar el token obtenido
+                    setAccessToken(accessToken);
                     const clientes = await obtenerClientes();
                     console.log('Lista de clientes obtenida correctamente:', clientes);
-                }catch (error) {
+                } catch (error) {
                     console.error('Error al obtener la lista de clientes:', error.message);
                 }
-            break;
+                break;
 
-        case '6':  
+            case '6':
+                // Enviar datos a la API desde JSON generado
                 try {
                     const accessToken = await obtenerAccessToken();
-                    setAccessToken(accessToken); // Almacenar el token obtenido
-                   
-                    // Leer el JSON generado
+                    setAccessToken(accessToken);
                     const jsonData = require('./ArchivoGenerado.json');
-            
-                    // Enviar los datos a la API utilizando la función enviarDatos
                     const resultado = await enviarDatos(jsonData);
-            
                     console.log('Datos enviados correctamente:', resultado);
                 } catch (error) {
                     console.error('Error al procesar la opción 6:', error.message);
                 }
-        break;
-        }
-        
-        await pausa();
-        
-    } while(opt !== '0'); 
-        
+                break;
+
+            case '7':
+                try {
+                    const excelFilePath = 'C:/Users/admin/Desktop/CC/PP/01-Convert/prueba.xlsx';
+                    const workbook = xlsx.readFile(excelFilePath, { cellText: false });
+                    const sheetName = workbook.SheetNames[0];
+                    const sheetData = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
     
-}
+                    const accessToken = await obtenerAccessToken();
+                    setAccessToken(accessToken);
+    
+                    const errorFilePath = 'C:/Users/admin/Desktop/CC/PP/01-Convert/Errores/errores.txt';
+                    const errorStream = fs.createWriteStream(errorFilePath, { flags: 'a' }); // Abrir archivo en modo append
+    
+                    for (const row of sheetData) {
+                        try {
+                            const jsonData = generarJSONFromRow(row);
+                            const resultado = await enviarDatos(jsonData);
+                            console.log(`Cliente ${jsonData.Codigo} enviado.`);
+                        } catch (error) {
+                            console.error(`Error al enviar cliente ${row.Codigo}:`, error.message);
+                            const errorMessage = `Cliente ${row.Codigo}: ${error.message}\n`;
+                            errorStream.write(errorMessage);
+                        }
+                    }
+    
+                    errorStream.end(); // Cerrar el archivo de errores
+                    console.log('Procesamiento completo.');
+                    await pausa();
+                } catch (error) {
+                        console.error('Error al procesar clientes desde Excel:', error);
+                }
+            break;
+        }
+
+        await pausa();
+    } while (opt !== '0');
+};
+
 main();

@@ -1,0 +1,3 @@
+Cliente 303: Error al enviar los datos: Request failed with status code 400
+Cliente 301: Error al enviar los datos: Request failed with status code 400
+Cliente 302: Error al enviar los datos: Request failed with status code 400
