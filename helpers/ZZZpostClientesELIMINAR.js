@@ -4,7 +4,7 @@ const { getAccessToken } = require('./acces_token'); // Importa la función getA
 const enviarDatos = async (jsonData) => {
     try {
         const accessToken = getAccessToken(); // Obtiene el token de acceso almacenado
-        const url = 'http://localhost:5001/api/v2/clientes'; // URL del endpoint para enviar los datos de clientes
+        const url = `${process.env.API_BASE_URL}/api/v2/clientes`; // URL del endpoint para enviar los datos de clientes
 
         if (!accessToken) {
             throw new Error('No se ha obtenido un token de acceso.');
