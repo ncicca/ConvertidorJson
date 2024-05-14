@@ -1,0 +1,3 @@
+Cliente 710: Error al enviar los datos: Request failed with status code 400
+Cliente 711: Error al enviar los datos: Request failed with status code 400
+Cliente 712: Error al enviar los datos: Request failed with status code 400

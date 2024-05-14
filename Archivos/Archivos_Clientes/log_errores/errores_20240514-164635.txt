@@ -1,0 +1,1 @@
+Cliente 710: Error al enviar los datos: Request failed with status code 400

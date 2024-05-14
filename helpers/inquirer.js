@@ -9,7 +9,7 @@ const preguntas = [
     {
         type: 'list',
         name: 'opcion',
-        message: 'Que desea hacer?',
+        message: '¿Que desea hacer?',
         choices: [
             {
                 value: '1',
@@ -28,22 +28,27 @@ const preguntas = [
 
             {
                 value: '4',
-                name:`${ '4'.green.bold} Eliminar archivo JSON `
+                name:`${ '4'.green.bold} CLIENTES: Listado de clientes `
             },
 
             {
                 value: '5',
-                name:`${ '5'.green.bold} Obtener clientes GET `
+                name:`${ '5'.green.bold} CLIENTES: Importar vía API `
             },
 
             {
                 value: '6',
-                name:`${ '6'.green.bold} Enviar JSON vía POST `
+                name:`${ '6'.green.bold} Agregar funcionalidad `
             },
 
             {
                 value: '7',
-                name:`${ '7'.green.bold} Enviar excel completo vía POST `
+                name:`${ '7'.green.bold} Agregar funcionalidad `
+            },
+
+            {
+                value: '8',
+                name:`${ '8'.green.bold} PROVEEDORES: Listado de proveedores `
             },
 
             {
