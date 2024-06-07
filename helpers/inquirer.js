@@ -10,50 +10,51 @@ const preguntas = [
         type: 'list',
         name: 'opcion',
         message: '¿Que desea hacer?',
+        pageSize:20,
         choices: [
             {
                 value: '1',
-                name:`${ '1'.green.bold} Ver cantidad de registros del archivo `
+                name:`${ '1'.green.bold} Clientes » `
             },
 
             {
                 value: '2',
-                name:`${ '2'.green.bold} Obtener TOKEN `
+                name:`${ '2'.green.bold} Proveedores » `
             },
 
             {
                 value: '3',
-                name:`${ '3'.green.bold} Generar archivo JSON `
+                name:`${ '3'.green.bold} Comprobantes » `
             },
 
             {
                 value: '4',
-                name:`${ '4'.green.bold} CLIENTES: Listado de clientes `
+                name:`${ '4'.green.bold} VACIO `
             },
 
             {
                 value: '5',
-                name:`${ '5'.green.bold} CLIENTES: Importar vía API `
+                name:`${ '5'.green.bold} VACIO `
             },
 
             {
                 value: '6',
-                name:`${ '6'.green.bold} Agregar funcionalidad `
+                name:`${ '6'.green.bold} VACIO `
             },
 
             {
                 value: '7',
-                name:`${ '7'.green.bold} Agregar funcionalidad `
+                name:`${ '7'.green.bold} JSON `
             },
 
             {
                 value: '8',
-                name:`${ '8'.green.bold} PROVEEDORES: Listado de proveedores `
+                name:`${ '8'.green.bold} TOKEN `
             },
 
             {
                 value: '0',
-                name:`${ '0'.red.bold} ${'SALIR'.red.bold} `
+                name:`${ '0'.red} ${'SALIR'.red.bold} `
             },
         ]
     }
@@ -64,13 +65,15 @@ const preguntas = [
 const inquirerMenu = async () => {
 
     console.clear();
-    console.log('============================='.cyan);
-    console.log('|  Seleccione una opción    |'.cyan);
-    console.log('=============================\n'.cyan);
+    console.log('============================='.green);
+    console.log('|  Seleccione una opción    |'.green);
+    console.log('=============================\n'.green);
 
    const {opcion} = await inquirer.prompt(preguntas);
    return opcion;
 }
+
+
 
 const pausa = async () => {
 
@@ -204,10 +207,137 @@ const mostrarListadoCheckList = async (tareas = [] ) =>{
 
 }
 
+const preguntasSubMenuClientes = [
+    {
+        type: 'list',
+        name: 'opcion',
+        message: 'Seleccione una opción del submenú:',
+        choices: [
+            {
+                value: '1',
+                name: `${'■.'.green} Listar Clientes`
+            },
+            {
+                value: '2',
+                name: `${'■.'.green} Listar Clientes por ID`
+            },
+            {
+                value: '3',
+                name: `${'■.'.green} Importar Clientes`
+            },
+            {
+                value: '4',
+                name: `${'■.'.green} Leer cantidad de registros del Excel`
+            },
+            {
+                value: '0',
+                name: `${'0.'.red} Salir del submenú`
+            }
+        ]
+    }
+];
+
+const inquirerSubMenuClientes = async () => {
+    console.clear();
+    console.log('============================='.green);
+    console.log('   Seleccione una subopción   '.white);
+    console.log('=============================\n'.green);
+
+    const { opcion } = await inquirer.prompt(preguntasSubMenuClientes);
+    return opcion;
+};
+
+
+const preguntasSubMenuProveedores = [
+    {
+        type: 'list',
+        name: 'opcion',
+        message: 'Seleccione una opción del submenú:',
+        choices: [
+            {
+                value: '1',
+                name: `${'■.'.green} Listar Proveedores`
+            },
+            {
+                value: '2',
+                name: `${'■.'.green} Listar Proveedores por ID`
+            },
+            {
+                value: '3',
+                name: `${'■.'.green} Importar Proveedores`
+            },
+            {
+                value: '4',
+                name: `${'■.'.green} Leer cantidad de registros del Excel`
+            },
+            {
+                value: '0',
+                name: `${'0.'.red} Salir del submenú`
+            }
+        ]
+    }
+];
+
+const inquirerSubMenuProveedores = async () => {
+    console.clear();
+    console.log('============================='.green);
+    console.log('   Seleccione una subopción   '.white);
+    console.log('=============================\n'.green);
+
+    const { opcion } = await inquirer.prompt(preguntasSubMenuProveedores);
+    return opcion;
+};
+
+
+
+const preguntasSubMenuComprobantes = [
+    {
+        type: 'list',
+        name: 'opcion',
+        message: 'Seleccione una opción del submenú:',
+        choices: [
+            {
+                value: '1',
+                name: `${'■.'.green} Listar Proveedores`
+            },
+            {
+                value: '2',
+                name: `${'■.'.green} Listar Proveedores por ID`
+            },
+            {
+                value: '3',
+                name: `${'■.'.green} Importar Proveedores`
+            },
+            {
+                value: '4',
+                name: `${'■.'.green} Leer cantidad de registros del Excel`
+            },
+            {
+                value: '0',
+                name: `${'0.'.red} Salir del submenú`
+            }
+        ]
+    }
+];
+
+const inquirerSubMenuComprobantes = async () => {
+    console.clear();
+    console.log('============================='.green);
+    console.log('   Seleccione una subopción   '.white);
+    console.log('=============================\n'.green);
+
+    const { opcion } = await inquirer.prompt(preguntasSubMenuComprobantes);
+    return opcion;
+};
+
+
 
 
 module.exports = {
     inquirerMenu,
+    inquirerSubMenuClientes,
+    inquirerSubMenuProveedores,
+    inquirerSubMenuComprobantes,
     pausa,
     leerInput,
     listadoTareasBorrar,

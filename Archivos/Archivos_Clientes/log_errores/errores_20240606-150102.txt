@@ -1,0 +1,2 @@
+Cliente 2: Error al enviar los datos: Request failed with status code 400
+Cliente 3: Error al enviar los datos: Request failed with status code 400
